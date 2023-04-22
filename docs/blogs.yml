@@ -1,0 +1,195 @@
+paths:
+  /api/blogs/{id}:
+    get:
+      description: Obtain information about specific blogpost from database
+      tags:
+        - Blog
+        - Admin
+        - Client
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of blogpost to be returned
+          schema:
+            type: string
+            example: 640f2eccc0af2546d4a65fb1
+        
+      responses:
+        200:
+          description: Successfull pull of blogpost info
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: A brief description of the failure or sucess of request
+                    example: success
+                  message:
+                    type: string
+                    description: An indepth description of the failure or success of request
+                    example: Sucessfully pulled a blog from database
+                  data:
+                    type: object
+                    properties:
+                      blog:
+                        $ref: '#/components/schemas/Blog'
+                      comments:
+                        type: array
+                        items:
+                          - $ref: '#/components/schemas/Comments'
+    
+    delete:
+      security:
+        - ApiKeyAuth: []
+      description: Delete specific blogpost from database
+      tags:
+        - Blog
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of blogpost to be deleted
+          schema:
+            type: string
+            example: 640f2eccc0af2546d4a65fb1
+
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully deleted a blogpost
+    
+    patch:
+      security:
+        - ApiKeyAuth: []
+      description: Delete specific blogpost from database
+      tags:
+        - Blog
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of blogpost to be deleted
+          schema:
+            type: string
+            example: 640f2eccc0af2546d4a65fb1
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully patched a blogpost
+        
+        400:
+          description: Blogpost patch was not successful
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Error-blog'
+    
+    post:
+      description: Comment on a specific blogpost
+      tags:
+        - Client
+        - Blog
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of a blogpost to add a comment to
+          schema:
+            type: string
+            example: 640f2eccc0af2546d4a65fb1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully commented on a blogpost
+        
+        400:
+          description: Commenting was not successful
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Error-blog'
+
+  /api/blogs:
+    get:
+      description: Obtain information about all blogpost from database
+      tags:
+        - Blog
+        - Admin
+        - Client
+      parameters:
+        - in: query
+          name: term
+          description: The term to search \### it searches in titles only
+          required: false
+          content:
+            application/json:
+              schema:
+                type: string
+                example: A close look
+      responses:
+        200:
+          description: Successfull pull of blogposts from the database
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blog'
+    post:
+      security:
+          - ApiKeyAuth: []
+      description: Creates a new blogpost in the database and returns its id
+      tags:
+        - Blog
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Blog'
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully created blogpost in the database
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 640f2eccc0af2546d4a65fb1
+        
+        400:
+          description: Blogpost creation was not successful
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Error-blog'

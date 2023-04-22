@@ -1,0 +1,195 @@
+tags:
+  - name: Blog
+    description: Blog Post managing API
+  - name: Project
+    description: Project managing API
+  - name: Query
+    description: Query managing API
+  - name: Subscriber
+    description: Subscriber managing API
+  - name: User
+    description: User managing API
+  - name: Admin
+    description: Avaible operation for Admin
+  - name: Client
+    description: Available operations for client
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: jwt
+  schemas:
+    User:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          description: The name of the user
+          example: Dwayne Campbell
+        email:
+          type: string
+          description: The email of the user
+          example: juankirkland04@gmail.com
+        password:
+          type: string
+          description: The password of the account
+          example: T3st!234
+    Comment:
+      type: object
+      required:
+        - blog
+        - name
+        - email
+        - comment
+        - saveCookie
+        - replyTo
+      properties:
+        blog:
+          type: string
+          description: An id of a blog this comment belongs
+          example: 640f2eccc0af2546d4a65fb1
+        name:
+          type: string
+          description: The name of the person commenting
+          example: Dwayne Campbell
+        email:
+          type: string
+          description: The email of person commenting
+          example: juankirkland04@gmail.com
+        comment:
+          type: string
+          description: the actual comment being added to a blog
+          example: This is a really nice blog man, keep it up
+        saveCookie:
+          type: boolean
+          description: The permission to store name and email in browser, so that user won't have to enter the same details again to save time
+          example: true
+        replyTo:
+          type: string
+          description: The instance you are commenting on either 'blog'/## default or ${id} of the instance you are replying to.
+    Subscriber:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        email:
+          type: string
+          description: The email to receive updates
+          example: juankirkland04@gmail.com
+        name:
+          type: string
+          description: The name of subscriber
+          example: Dwayne Campbell
+    Query:
+      type: object
+      required:
+        - name
+        - email
+        - message
+      properties:
+        name:
+          type: string
+          description: The name of a person sending a query
+          example: Kagaba Etienne
+        email:
+          type: string
+          description: the email you wish to be responed on
+          example: juankirkland04@gmail.com
+        phone:
+          type: string
+          description: A phone to reach you if applicable
+          example: '+250789101112'
+        message:
+           type: string
+           description: The message you wish to send
+           example: I have this project I am working on and would grately appreciate your help
+    Project:
+      type: object
+      required:
+        - title
+        - body
+        - coverPhoto
+        - author
+      properties:
+        _id:
+          type: object
+          description: The auto generated id of the project
+          example: 640f2eccc0af2546d4a65fb1
+        title:
+          type: string
+          description: The project title
+          example: A contribution made to spotify
+        body:
+          oneOf:
+            - type: string
+            - type: array
+          description: The paragraphs of the body
+          example: llksajdf ldsfjalkdsfjasdf safdkjflasjdfklsa fsklfjsdlfjs dflkdsjfls fd…
+        coverPhoto:
+          type: string
+          description: Cover photo link
+          example: https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=871&q=80
+    Blog:
+      type: object
+      required:
+        - title
+        - body
+        - coverPhoto
+        - author
+      properties:
+        _id:
+          type: object
+          description: The auto generated id of the blog post
+          example: 640f2eccc0af2546d4a65fb1
+        title:
+          type: string
+          description: The blog post title
+          example: A closer look at the most conventional but useless practices in delelopment
+        body:
+          oneOf:
+            - type: string
+            - type: array
+          description: The body paragraphs
+          example: llksajdf ldsfjalkdsfjasdf safdkjflasjdfklsa fsklfjsdlfjs dflkdsjfls fd…
+        coverPhoto:
+          type: string
+          description: Cover photo link
+          example: https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=871&q=80
+        author:
+          type: string
+          description: The blog post author
+          example: Etienne kagaba
+    Error-blog:
+      type: object
+      properties:
+        coverPhoto:
+          type: string
+          example: Please enter a valid link
+        title:
+          type: string
+          example: Please enter a blogpost title
+        body:
+          type: string
+          example: Please enter a blogpost body
+    Error-registration:
+      type: object
+      properties:
+        email:
+          type: string
+          example: Please enter a valid email address
+        password:
+          type: string
+          example: Please enter a correct password
+        confirm password:
+          type: string
+          example: Passwords do not match
+  responses:
+    UnauthorizedError:
+      description: Error user not authorized \# Access token is missing or invalid \#

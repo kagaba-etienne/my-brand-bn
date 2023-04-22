@@ -1,0 +1,116 @@
+paths:
+  /api/queries:
+    get:
+      security:
+        - ApiKeyAuth: []
+      description: Obtain information of all queries in the database
+      tags:
+        - Admin
+        - Query
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfull pulled all queries from the database
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Query'
+  
+  /api/queries/{id}:
+    get:
+      security:
+        - ApiKeyAuth: []
+      description: Obtain information about specific query
+      tags:
+        - Query
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the query requested
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 640f2eccc0af2546d4a65fb1
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully pulled a query out of the database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Query'
+        400:
+          description: A query with that id was not found
+  
+    patch:
+      security:
+        - ApiKeyAuth: []
+      description: Update information of a specific query
+      tags:
+        - Query
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the query to patch
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 640f2eccc0af2546d4a65fb1
+      requestBody:
+        required: true
+        content:
+          appllication/json:
+            schema:
+              $ref: '#/components/schemas/Query'
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully patched a query
+        
+        400:
+          description: Query patching was not successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error-registration'
+  
+    delete:
+      security:
+        - ApiKeyAuth: []
+      description: Delete information of a specific query
+      tags:
+        - Query
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the query to be deleted
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 640f2eccc0af2546d4a65fb1
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully deleted a query
+        
+        404:
+          description: A query with that id was not found

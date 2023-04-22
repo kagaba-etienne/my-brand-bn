@@ -1,0 +1,6 @@
+/src/css/*.scss
+/src/css/*.css.map
+/src/public/css/*.scss
+/src/public/css/*.css.map
+node_modules
+.env

@@ -1,0 +1,62 @@
+paths:
+  /api/user/login:
+    post:
+      description: Login a user
+      tags:
+        - User
+        - Admin
+        - Client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Successfully logged in a user
+        
+        400:
+          description: Login was not successful
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Error-registration'
+  
+  /api/user/signup:
+    post:
+      security:
+        - ApiKeyAuth: []
+      description: Signup a user
+      tags:
+        - Admin
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully signed up a user
+        400:
+          description: Signup was not successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error-registration'
+  /api/user/logout:
+    get:
+      security:
+        - ApiKeyAuth: []
+      description: Logout a current loggedin user
+      tags:
+        - Admin
+        - User
+      responses:
+        200:
+          description: Successfully logged out

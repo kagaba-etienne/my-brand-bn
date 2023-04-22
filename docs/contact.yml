@@ -1,0 +1,54 @@
+paths:
+  /api/contact:
+    post:
+      description: Sends a query to the admin
+      tags:
+        - Admin
+        - Query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Query'
+      responses:
+        200:
+          description: Successfully send query to the admin
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  sucess:
+                    type: boolean
+                    example: true
+  
+  /api/subscriber:
+    post:
+      description: Subscribe to the newletter
+      tags:
+        - Subscriber
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscriber'
+      responses:
+        200:
+          description: Successfully subscribed to our news letter
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 640f2eccc0af2546d4a65fb1
+        400:
+          description: Subscription was not successful
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Error-registration'

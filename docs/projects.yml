@@ -1,0 +1,131 @@
+paths:
+  /api/projects/{id}:
+    get:
+      description: Obtain information about specific project from database
+      tags:
+        - Project
+        - Admin
+        - Client
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of project to be returned
+          schema:
+            type: string
+            example: 640f2eccc0af2546d4a65fb1
+        
+      responses:
+        200:
+          description: Successfull pull of project info
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    
+    delete:
+      security:
+        - ApiKeyAuth: []
+      description: Delete specific project from database
+      tags:
+        - Project
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of project to be deleted
+          schema:
+            type: string
+            example: 640f2eccc0af2546d4a65fb1
+
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully deleted a project
+    
+    patch:
+      security:
+        - ApiKeyAuth: []
+      description: Delete specific project from database
+      tags:
+        - Project
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of project to be deleted
+          schema:
+            type: string
+            example: 640f2eccc0af2546d4a65fb1
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+
+      responses:
+        200:
+          description: Successfully patched a project
+        
+        400:
+          description: Project patch was not successful
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Error-blog'
+
+  /api/projects:
+    get:
+      description: Obtain information about all projects from database
+      tags:
+        - Project
+        - Admin
+        - Client
+      responses:
+        200:
+          description: Successfull pull of projects from the database
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      security:
+        - ApiKeyAuth: []
+      description: Creates a new project in the database and returns its id
+      tags:
+        - Project
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        
+        200:
+          description: Successfully created project in the database
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 640f2eccc0af2546d4a65fb1
+        
+        400:
+          description: Project creation was not successful
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Error-blog'
